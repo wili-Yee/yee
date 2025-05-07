@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysDetectionDatasetMapper">
+    
+    <resultMap type="SysDetectionDataset" id="SysDetectionDatasetResult">
+        <result property="datasetId"    column="dataset_id"    />
+        <result property="datasetName"    column="dataset_name"    />
+        <result property="datasetDescription"    column="dataset_description"    />
+        <result property="filePath"    column="file_path"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="fileSize"    column="file_size"    />
+        <result property="recordCount"    column="record_count"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+
+    <sql id="selectSysDetectionDatasetVo">
+        select dataset_id, dataset_name, dataset_description, file_path, file_name, file_size, record_count, status, create_time, create_by, update_time, update_by from sys_detection_dataset
+    </sql>
+
+    <select id="selectSysDetectionDatasetList" parameterType="SysDetectionDataset" resultMap="SysDetectionDatasetResult">
+        <include refid="selectSysDetectionDatasetVo"/>
+        <where>  
+            <if test="datasetId != null "> and dataset_id = #{datasetId}</if>
+            <if test="datasetName != null  and datasetName != ''"> and dataset_name like concat('%', #{datasetName}, '%')</if>
+            <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysDetectionDatasetByDatasetId" parameterType="Long" resultMap="SysDetectionDatasetResult">
+        <include refid="selectSysDetectionDatasetVo"/>
+        where dataset_id = #{datasetId}
+    </select>
+
+    <insert id="insertSysDetectionDataset" parameterType="SysDetectionDataset" useGeneratedKeys="true" keyProperty="datasetId">
+        insert into sys_detection_dataset
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="datasetName != null and datasetName != ''">dataset_name,</if>
+            <if test="datasetDescription != null">dataset_description,</if>
+            <if test="filePath != null and filePath != ''">file_path,</if>
+            <if test="fileName != null">file_name,</if>
+            <if test="fileSize != null">file_size,</if>
+            <if test="recordCount != null">record_count,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="datasetName != null and datasetName != ''">#{datasetName},</if>
+            <if test="datasetDescription != null">#{datasetDescription},</if>
+            <if test="filePath != null and filePath != ''">#{filePath},</if>
+            <if test="fileName != null">#{fileName},</if>
+            <if test="fileSize != null">#{fileSize},</if>
+            <if test="recordCount != null">#{recordCount},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysDetectionDataset" parameterType="SysDetectionDataset">
+        update sys_detection_dataset
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="datasetName != null and datasetName != ''">dataset_name = #{datasetName},</if>
+            <if test="datasetDescription != null">dataset_description = #{datasetDescription},</if>
+            <if test="filePath != null and filePath != ''">file_path = #{filePath},</if>
+            <if test="fileName != null">file_name = #{fileName},</if>
+            <if test="fileSize != null">file_size = #{fileSize},</if>
+            <if test="recordCount != null">record_count = #{recordCount},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+        </trim>
+        where dataset_id = #{datasetId}
+    </update>
+
+    <delete id="deleteSysDetectionDatasetByDatasetId" parameterType="Long">
+        delete from sys_detection_dataset where dataset_id = #{datasetId}
+    </delete>
+
+    <delete id="deleteSysDetectionDatasetByDatasetIds" parameterType="String">
+        delete from sys_detection_dataset where dataset_id in 
+        <foreach item="datasetId" collection="array" open="(" separator="," close=")">
+            #{datasetId}
+        </foreach>
+    </delete>
+</mapper>

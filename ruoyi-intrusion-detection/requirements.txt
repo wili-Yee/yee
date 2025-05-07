@@ -1,0 +1,9 @@
+flask==2.2.3
+torch==2.4.1
+torchvision==0.19.1
+torchaudio==2.4.1
+pandas==1.5.3
+numpy==1.24.3
+scikit-learn==1.2.2
+joblib==1.2.0
+werkzeug==2.2.3  # 明确指定Werkzeug版本

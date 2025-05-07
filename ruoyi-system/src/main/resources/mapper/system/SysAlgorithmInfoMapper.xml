@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysAlgorithmInfoMapper">
+    
+    <resultMap type="SysAlgorithmInfo" id="SysAlgorithmInfoResult">
+        <result property="algorithmId"    column="algorithm_id"    />
+        <result property="algorithmName"    column="algorithm_name"    />
+        <result property="algorithmDescription"    column="algorithm_description"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+
+    <sql id="selectSysAlgorithmInfoVo">
+        select algorithm_id, algorithm_name, algorithm_description, status, create_time, create_by, update_time, update_by from sys_algorithm_info
+    </sql>
+
+    <select id="selectSysAlgorithmInfoList" parameterType="SysAlgorithmInfo" resultMap="SysAlgorithmInfoResult">
+        <include refid="selectSysAlgorithmInfoVo"/>
+        <where>  
+            <if test="algorithmId != null "> and algorithm_id = #{algorithmId}</if>
+            <if test="algorithmName != null  and algorithmName != ''"> and algorithm_name like concat('%', #{algorithmName}, '%')</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysAlgorithmInfoByAlgorithmId" parameterType="Long" resultMap="SysAlgorithmInfoResult">
+        <include refid="selectSysAlgorithmInfoVo"/>
+        where algorithm_id = #{algorithmId}
+    </select>
+
+    <insert id="insertSysAlgorithmInfo" parameterType="SysAlgorithmInfo" useGeneratedKeys="true" keyProperty="algorithmId">
+        insert into sys_algorithm_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="algorithmName != null and algorithmName != ''">algorithm_name,</if>
+            <if test="algorithmDescription != null">algorithm_description,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="algorithmName != null and algorithmName != ''">#{algorithmName},</if>
+            <if test="algorithmDescription != null">#{algorithmDescription},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysAlgorithmInfo" parameterType="SysAlgorithmInfo">
+        update sys_algorithm_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="algorithmName != null and algorithmName != ''">algorithm_name = #{algorithmName},</if>
+            <if test="algorithmDescription != null">algorithm_description = #{algorithmDescription},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+        </trim>
+        where algorithm_id = #{algorithmId}
+    </update>
+
+    <delete id="deleteSysAlgorithmInfoByAlgorithmId" parameterType="Long">
+        delete from sys_algorithm_info where algorithm_id = #{algorithmId}
+    </delete>
+
+    <delete id="deleteSysAlgorithmInfoByAlgorithmIds" parameterType="String">
+        delete from sys_algorithm_info where algorithm_id in 
+        <foreach item="algorithmId" collection="array" open="(" separator="," close=")">
+            #{algorithmId}
+        </foreach>
+    </delete>
+</mapper>
